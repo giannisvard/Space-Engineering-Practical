@@ -29,40 +29,42 @@ void loop()
 {
 	uint32_t start = micros();
 	digitalWrite(LED_BUILTIN, led_state=!led_state);
-	Serial.print("A0:");
+	Serial.print("A0,");
 	int a0 = analogRead(A0);
 	double a0f = (((double)a0)/adc_max) * 3.3d;
 	Serial.print(a0);
 	Serial.print(" ");
 	Serial.println(a0f);
-	Serial.print("A1:");
+	Serial.print("A1,");
 	int a1 = analogRead(A1);
 	double a1f = (((double)a1)/adc_max) * 3.3d;
 	Serial.print(a1);
 	Serial.print(" ");
 	Serial.println(a1f);
-	Serial.print("A2:");
+	Serial.print("A2,");
 	int a2 = analogRead(A2);
 	double a2f = (((double)a2)/adc_max) * 3.3d;
 	Serial.print(a2);
 	Serial.print(" ");
 	Serial.println(a2f);
-	Serial.print("A3:");
+	Serial.print("A3,");
 	int a3 = analogRead(A3);
 	double a3f = (((double)a3)/adc_max) * 3.3d;
 	Serial.print(a3);
-	Serial.print(" ");
+	Serial.print(", ");
 	Serial.println(a3f);
 	// Calculate sunangles
-	Serial.print("Sunangle alpha:");
+	Serial.print("Sunangle alpha,");
 	float Qtot = a0 + a1 + a2 + a3;
 	float tanalpha = (a3 + a0 - a1 - a2)/Qtot * maxTanAlpha; // y direction 
 	float tanbeta = (a0 + a1 - a2 - a3)/Qtot * maxTanAlpha; // x direction
 	Serial.print(" ");
-	Serial.println(tanalpha);
-	Serial.print("Sunangle beta");
+	float alpha = std::atan(tanalpha) * 180 / PI;
+	Serial.println(alpha);
+	Serial.print("Sunangle beta,");
 	Serial.print(" ");
-	Serial.println(tanbeta);
+	float beta = std::atan(tanbeta) * 180 / PI;
+	Serial.println(beta);
 	Serial.flush();
 	uint32_t elapsed = micros() - start;
 	if (elapsed < period)
