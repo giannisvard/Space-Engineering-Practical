@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <math.h>
 
 constexpr uint8_t ADC_BITS = 16; // ADC resolution in bits
 
@@ -20,6 +21,9 @@ bool led_state = false;
 constexpr uint32_t frequency = 1u; // Hz
 constexpr uint32_t period = 1000000u/frequency; // us
 constexpr double adc_max = (double)(pow(2, ADC_BITS)-1); // 16-bit ADC max value
+float maxTanAlpha = std::tan(59.2 * PI / 180); //maximum angle in both axes
+
+
 
 void loop()
 {
@@ -49,6 +53,16 @@ void loop()
 	Serial.print(a3);
 	Serial.print(" ");
 	Serial.println(a3f);
+	// Calculate sunangles
+	Serial.print("Sunangle alpha:");
+	float Qtot = a0 + a1 + a2 + a3;
+	float tanalpha = (a3 + a0 - a1 - a2)/Qtot * maxTanAlpha; // y direction 
+	float tanbeta = (a0 + a1 - a2 - a3)/Qtot * maxTanAlpha; // x direction
+	Serial.print(" ");
+	Serial.println(tanalpha);
+	Serial.print("Sunangle beta");
+	Serial.print(" ");
+	Serial.println(tanbeta);
 	Serial.flush();
 	uint32_t elapsed = micros() - start;
 	if (elapsed < period)
