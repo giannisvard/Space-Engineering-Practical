@@ -1,9 +1,10 @@
 #include <Arduino.h>
 
+constexpr uint8_t ADC_BITS = 16; // ADC resolution in bits
 
 void setup()
 {
-	analogReadResolution(16); // Set ADC resolution to 16 bits
+	analogReadResolution(ADC_BITS); // Set ADC resolution to 16 bits
 	pinMode(LED_BUILTIN, OUTPUT);
 	Serial.begin(1000000, SERIAL_8N1);
 	digitalWrite(LED_BUILTIN, HIGH);
@@ -18,9 +19,8 @@ bool led_state = false;
 
 constexpr uint32_t frequency = 1u; // Hz
 constexpr uint32_t period = 1000000u/frequency; // us
+constexpr double adc_max = (double)(pow(2, ADC_BITS)-1); // 16-bit ADC max value
 
-constexpr double adc_max = (double)(2e12);
-bool dir = true;
 void loop()
 {
 	uint32_t start = micros();
