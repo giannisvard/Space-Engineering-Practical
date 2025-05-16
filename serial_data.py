@@ -6,7 +6,7 @@ data_path = os.path.join(cfd, 'data')
 
 def readSerial(comport, baudrate, timeA):
     t = time.time()
-    #ser = serial.Serial(comport, baudrate, timeout=0.1)         # 1/timeout is the frequency at which the port is read
+    ser = serial.Serial(comport, baudrate, timeout=0.1)         # 1/timeout is the frequency at which the port is read
 
     Q1 = []
     Q2 = []
@@ -16,8 +16,7 @@ def readSerial(comport, baudrate, timeA):
     sb = []
 
     while True:
-        #data = ser.readline().decode().strip()
-        data = "A0,11 0.00 \n A1,7 0.00 \n A2,25 0.00 \n A3,1, 0.00 \n Sunangle alpha, -37.33 \n Sunangle beta, -16.96"
+        data = ser.readline().decode().strip()
         if data:
             # extract quadrant bits and angles
             lines = data.strip().split('\n')
