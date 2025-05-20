@@ -33,7 +33,9 @@ void setup()
 bool led_state = false;
 bool moving = false;
 
-constexpr uint32_t frequency = 1u;						   // Hz
+constexpr char SEP = ',';
+
+constexpr uint32_t frequency = 10u;						   // Hz
 constexpr uint32_t period = 1000000u / frequency;		   // us
 constexpr double adc_max = (double)(pow(2, ADC_BITS) - 1); // 16-bit ADC max value
 float maxTanAlpha = std::tan(59.2 * PI / 180);			   // maximum angle in both axes
@@ -54,23 +56,23 @@ void loop()
 		float alpha = std::atan(tanalpha) * 180 / PI;
 		float beta = std::atan(tanbeta) * 180 / PI;
 		Serial.print(start);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(q1);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(q2);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(q3);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(q4);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(Qtot);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(tanalpha);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(tanbeta);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.print(alpha);
-		Serial.print("\t");
+		Serial.print(SEP);
 		Serial.println(beta);
 		last_time += period;
 	}
