@@ -18,6 +18,7 @@ with serial.Serial(PORT, 1000000) as ser:
     else:
         print("Using provided file name:", fname)
     with open("data/"+ fname, "w") as f:
+        f.write("time, stepper position, q1, q2, q3, q4, sum, tanA, tanB, A, B\n")
         for i in np.linspace(-EXTREME_ANGLE, EXTREME_ANGLE, NUM_STOPS*2+1):
             ser.read_all()
             w = f"move:{int(i*16/0.9)}\n".encode()
@@ -30,6 +31,6 @@ with serial.Serial(PORT, 1000000) as ser:
                     print("Movement completed")
                     break
             for j in range(NUM_MEASUREMENTS):
-                line = ser.readline()
-                f.write(line.decode().strip()+"\n")
+                line = ser.readline().decode().strip()
+                f.write(line + "\n")
         ser.write(b"rst\n")

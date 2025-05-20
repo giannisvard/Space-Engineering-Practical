@@ -57,6 +57,8 @@ void loop()
 		float beta = std::atan(tanbeta) * 180 / PI;
 		Serial.print(start);
 		Serial.print(SEP);
+		Serial.print(stepper.currentPosition());
+		Serial.print(SEP);
 		Serial.print(q1);
 		Serial.print(SEP);
 		Serial.print(q2);
