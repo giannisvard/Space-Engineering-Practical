@@ -1,8 +1,9 @@
 import serial
 import time
 import numpy as np
+import os
 
-PORT = "COM9"  # Replace with your port
+PORT = "COM5"  # Replace with your port
 
 NUM_MEASUREMENTS = 10  # Number of measurements to take
 EXTREME_ANGLE = 60 
@@ -17,6 +18,8 @@ with serial.Serial(PORT, 1000000) as ser:
         fname = time.strftime("%Y%m%d-%H%M%S") + ".txt"
     else:
         print("Using provided file name:", fname)
+    if not os.path.exists("data"):
+        os.mkdir("data")
     with open("data/"+ fname, "w") as f:
         f.write("time, stepper position, q1, q2, q3, q4, sum, tanA, tanB, A, B\n")
         for i in np.linspace(-EXTREME_ANGLE, EXTREME_ANGLE, NUM_STOPS*2+1):
@@ -33,4 +36,4 @@ with serial.Serial(PORT, 1000000) as ser:
             for j in range(NUM_MEASUREMENTS):
                 line = ser.readline().decode().strip()
                 f.write(line + "\n")
-        ser.write(b"rst\n")
+        ser.write(b"move:0\n")
