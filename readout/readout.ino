@@ -46,21 +46,21 @@ void loop()
 	if (last_time + period <= start)
 	{
 		digitalWrite(LED_BUILTIN, led_state = !led_state);
-		int q1 = 0;
-		int q2 = 0;
-		int q3 = 0;
-		int q4 = 0;
-		for(int i = 0; i < average_samples; i++) {
+		uint32_t q1 = 0;
+		uint32_t q2 = 0;
+		uint32_t q3 = 0;
+		uint32_t q4 = 0;
+		for(uint32_t i = 0; i < average_samples; i++) {
 			q1 += analogRead(0); // Read ADC channel 0
 			q2 += analogRead(1); // Read ADC channel 1
 			q3 += analogRead(2); // Read ADC channel 2
 			q4 += analogRead(3); // Read ADC channel 3
 		}
-		float Qtot = q1 + q2 + q3 + q4;
-		float tanalpha = (q1 + q4 - q2 - q3) / Qtot * maxTanAlpha; // y direction
-		float tanbeta = (q1 + q2 - q3 - q4) / Qtot * maxTanAlpha;  // x direction
-		float alpha = std::atan(tanalpha) * 180 / PI;
-		float beta = std::atan(tanbeta) * 180 / PI;
+		double Qtot = q1 + q2 + q3 + q4;
+		double tanalpha = (q1 + q4 - q2 - q3) / Qtot * maxTanAlpha; // y direction
+		double tanbeta = (q1 + q2 - q3 - q4) / Qtot * maxTanAlpha;  // x direction
+		double alpha = std::atan(tanalpha) * 180 / PI;
+		double beta = std::atan(tanbeta) * 180 / PI;
 		Serial.print(start);
 		Serial.print(SEP);
 		Serial.print(stepper.currentPosition());
