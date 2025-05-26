@@ -22,21 +22,21 @@ void setup()
 	digitalWrite(LED_BUILTIN, HIGH);
 	while (!Serial)
 		; // Wait for Serial Monitor to open
-	Serial.flush();
 	digitalWrite(LED_BUILTIN, LOW);
-
 	stepper.setMaxSpeed(1000);
 	stepper.setAcceleration(1000);
 	memset(buffer, 0, sizeof(buffer));
+	last_time = micros();
 }
 
 bool led_state = false;
 bool moving = false;
 
-constexpr char SEP = ',';
+#define SEP ",\t"
 
-constexpr uint32_t frequency = 10u;						   // Hz
+constexpr uint32_t frequency = 100u;						   // Hz
 constexpr uint32_t period = 1000000u / frequency;		   // us
+constexpr uint32_t average_samples = 100u;			   // number of samples to average
 constexpr double adc_max = (double)(pow(2, ADC_BITS) - 1); // 16-bit ADC max value
 float maxTanAlpha = std::tan(59.2 * PI / 180);			   // maximum angle in both axes
 
@@ -46,10 +46,16 @@ void loop()
 	if (last_time + period <= start)
 	{
 		digitalWrite(LED_BUILTIN, led_state = !led_state);
-		int q1 = analogRead(A0);
-		int q2 = analogRead(A1);
-		int q3 = analogRead(A2);
-		int q4 = analogRead(A3);
+		int q1 = 0;
+		int q2 = 0;
+		int q3 = 0;
+		int q4 = 0;
+		for(int i = 0; i < average_samples; i++) {
+			q1 += analogRead(0); // Read ADC channel 0
+			q2 += analogRead(1); // Read ADC channel 1
+			q3 += analogRead(2); // Read ADC channel 2
+			q4 += analogRead(3); // Read ADC channel 3
+		}
 		float Qtot = q1 + q2 + q3 + q4;
 		float tanalpha = (q1 + q4 - q2 - q3) / Qtot * maxTanAlpha; // y direction
 		float tanbeta = (q1 + q2 - q3 - q4) / Qtot * maxTanAlpha;  // x direction
