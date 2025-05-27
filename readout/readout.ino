@@ -35,7 +35,7 @@ bool moving = false;
 
 constexpr char SEP = ',';
 
-constexpr uint32_t frequency = 10u;						   // Hz
+constexpr uint32_t frequency = 100u;						   // Hz
 constexpr uint32_t period = 1000000u / frequency;		   // us
 constexpr double adc_max = (double)(pow(2, ADC_BITS) - 1); // 16-bit ADC max value
 float maxTanAlpha = std::tan(59.2 * PI / 180);			   // maximum angle in both axes
